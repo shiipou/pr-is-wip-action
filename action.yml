@@ -1,0 +1,16 @@
+name: pr-is-wip-action
+author: Shiipou <shiishii@nocturlab.fr>
+description: Ensure your PR is not in WIP state
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'shield'
+  color: 'green'
+inputs:
+  githubBaseUrl:
+    description: "Github Enterprise API url (e.g. https://github.example.com/api/v3)"
+    required: false
+outputs:
+  isWip:
+    description: "Is the PR in WIP state"
