@@ -8299,53 +8299,6 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 4351:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-const core = __nccwpck_require__(2186)
-const github = __nccwpck_require__(5438)
-
-module.exports = async function run() {
-  const client = github.getOctokit(process.env.GITHUB_TOKEN, {
-    baseUrl: process.env.INPUT_GITHUBBASEURL,
-  })
-
-  const contextPullRequest = github.context.payload.pull_request;
-  if (!contextPullRequest) {
-    throw new Error(
-      "This action can only be used in `pull_request` or `pull_request_target`."
-    )
-  }
-
-  const owner = contextPullRequest.base.user.login
-  const repo = contextPullRequest.base.repo.name
-
-  const {data: pullRequest} = await client.rest.pulls.get({
-    owner,
-    repo,
-    pull_number: contextPullRequest.number
-  })
-
-  const isWip = /^\[WIP\]\s/.test(pullRequest.title)
-  const logs = isWip ? 'This PR is marked as "WIP".' : 'This PR is marked as "Ready to review".'
-
-  await client.request('POST /repos/:owner/:repo/statuses/:sha', {
-    owner,
-    repo,
-    sha: pullRequest.head.sha,
-    state: isWip ? 'pending' : 'success',
-    target_url: 'https://github.com/shiipou/pr-is-wip-action',
-    description: logs,
-    context: 'pr-is-wip-action'
-  })
-
-  core.setOutput("isWip", `${isWip}`);
-  console.info(logs);
-}
-
-
-/***/ }),
-
 /***/ 2877:
 /***/ ((module) => {
 
@@ -8512,12 +8465,54 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(4351);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+const core = __nccwpck_require__(2186)
+const github = __nccwpck_require__(5438)
+
+async function run() {
+  const client = github.getOctokit(process.env.GITHUB_TOKEN, {
+    baseUrl: process.env.INPUT_GITHUBBASEURL,
+  })
+
+  const contextPullRequest = github.context.payload.pull_request;
+  if (!contextPullRequest) {
+    throw new Error(
+      "This action can only be used in `pull_request` or `pull_request_target`."
+    )
+  }
+
+  const owner = contextPullRequest.base.user.login
+  const repo = contextPullRequest.base.repo.name
+
+  const {data: pullRequest} = await client.rest.pulls.get({
+    owner,
+    repo,
+    pull_number: contextPullRequest.number
+  })
+
+  const isWip = /^\[WIP\]\s/.test(pullRequest.title)
+  const logs = isWip ? 'This PR is marked as "WIP".' : 'This PR is marked as "Ready to review".'
+
+  await client.request('POST /repos/:owner/:repo/statuses/:sha', {
+    owner,
+    repo,
+    sha: pullRequest.head.sha,
+    state: isWip ? 'pending' : 'success',
+    target_url: 'https://github.com/shiipou/pr-is-wip-action',
+    description: logs,
+    context: 'pr-is-wip-action'
+  })
+
+  core.setOutput("isWip", `${isWip}`);
+  console.info(logs);
+}
+
+run()
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;

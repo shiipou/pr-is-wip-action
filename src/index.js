@@ -1,7 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 
-module.exports = async function run() {
+async function run() {
   const client = github.getOctokit(process.env.GITHUB_TOKEN, {
     baseUrl: process.env.INPUT_GITHUBBASEURL,
   })
@@ -38,3 +38,5 @@ module.exports = async function run() {
   core.setOutput("isWip", `${isWip}`);
   console.info(logs);
 }
+
+run()
