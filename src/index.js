@@ -32,7 +32,7 @@ module.exports = async function run() {
     target_url: 'https://github.com/shiipou/pr-is-wip-action',
     description: isWip ? 'This PR is marked as "WIP".' : 'This PR is marked as "Ready to review".',
     context: 'pr-is-wip-action'
-  });
+  })
 
   core.setOutput("isWip", `${isWip}`);
 }
