@@ -1,7 +1,7 @@
-import core from '@actions/core'
-import github from '@actions/github'
+const core = require('@actions/core')
+const github = require('@actions/github')
 
-export async function run() {
+module.exports = async function run() {
   const client = github.getOctokit(process.env.GITHUB_TOKEN, {
     baseUrl: process.env.INPUT_GITHUBBASEURL,
   })
