@@ -23,6 +23,7 @@ module.exports = async function run() {
   })
 
   const isWip = /^\[WIP\]\s/.test(pullRequest.title)
+  const logs = isWip ? 'This PR is marked as "WIP".' : 'This PR is marked as "Ready to review".'
 
   await client.request('POST /repos/:owner/:repo/statuses/:sha', {
     owner,
@@ -30,9 +31,10 @@ module.exports = async function run() {
     sha: pullRequest.head.sha,
     state: isWip ? 'pending' : 'success',
     target_url: 'https://github.com/shiipou/pr-is-wip-action',
-    description: isWip ? 'This PR is marked as "WIP".' : 'This PR is marked as "Ready to review".',
+    description: logs,
     context: 'pr-is-wip-action'
   })
 
   core.setOutput("isWip", `${isWip}`);
+  console.info(logs);
 }
