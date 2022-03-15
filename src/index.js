@@ -36,7 +36,13 @@ async function run() {
   })
 
   core.setOutput("isWip", `${isWip}`);
-  console.info(logs);
+  return logs
 }
 
-run()
+run().then((result) => {
+  console.info(result)
+  process.exit(0)
+}).catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
