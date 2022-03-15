@@ -2,7 +2,7 @@
 
 This GitHub action will check all your PR and drastically reduce your CI usage.
 
-**Description**: As it take 1 second to run, it help you to skip unneeded check for all your GitHub Workflow.
+**Description**: As it take only 1 second to run, your GitHub Workflow never break your wallet again.
 
 ## Dependencies
 
