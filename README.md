@@ -20,7 +20,10 @@ Your workflow declaration must fit the following :
 name: Check CI
 on:
   pull_request:
-  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
 
 jobs:
   prIsWip:
