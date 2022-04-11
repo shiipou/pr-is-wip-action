@@ -14,7 +14,7 @@ This PR can only run on events `pull_request` and `pull_request_target`.
 
 You must define a custom workflow using YAML file in the directory `.github/wokflows/`.
 
-Your workflow declaration must fit the following : 
+Your workflow declaration must fit the following :
 
 ```yaml
 name: Check CI
@@ -32,7 +32,7 @@ jobs:
     timeout-minutes: 1
     steps:
       - id: pr-is-wip
-        uses: shiipou/pr-is-wip-action@v1.0.0
+        uses: shiipou/pr-is-wip-action@v1.1.x
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prIsWip
-    if: ${{ ! needs.prIsWip.outputs.isWip }}
+    if: needs.prIsWip.outputs.isWip == 'false'
     steps:
       - uses: actions/checkout@v2
       [...]

@@ -11,6 +11,10 @@ inputs:
   githubBaseUrl:
     description: "Github Enterprise API url (e.g. https://github.example.com/api/v3)"
     required: false
+  continueIfNonPR:
+    description: "Continue if the current event is not a PR"
+    required: false
+    default: 'false'
 outputs:
   isWip:
     description: "Is the PR in WIP state"

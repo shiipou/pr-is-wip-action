@@ -98,6 +98,7 @@ function escapeProperty(s) {
 }
 //# sourceMappingURL=command.js.map
 
+
 /***/ }),
 
 /***/ 2186:
@@ -416,6 +417,7 @@ function getIDToken(aud) {
 }
 exports.getIDToken = getIDToken;
 //# sourceMappingURL=core.js.map
+
 
 /***/ }),
 
@@ -8478,9 +8480,13 @@ async function run() {
 
   const contextPullRequest = github.context.payload.pull_request;
   if (!contextPullRequest) {
-    throw new Error(
-      "This action can only be used in `pull_request` or `pull_request_target`."
-    )
+    const message = 'This action can only be used in `pull_request` or `pull_request_target`.'
+    if (process.env.INPUT_CONTINUEIFNONPR != 'false') {
+      core.warning(message)
+      return message
+    } else {
+      throw new Error(message)
+    }
   }
 
   const owner = contextPullRequest.base.user.login
@@ -8494,6 +8500,8 @@ async function run() {
 
   const isWip = /^\[WIP\]\s/.test(pullRequest.title)
   const logs = isWip ? 'This PR is marked as "WIP".' : 'This PR is marked as "Ready to review".'
+  core.debug(`status: ${isWip}`)
+  core.setOutput("isWip", isWip ? "true" : "false")
 
   await client.request('POST /repos/:owner/:repo/statuses/:sha', {
     owner,
@@ -8505,15 +8513,14 @@ async function run() {
     context: 'pr-is-wip-action'
   })
 
-  core.setOutput("isWip", `${isWip}`);
   return logs
 }
 
 run().then((result) => {
-  console.info(result)
+  core.info(result)
   process.exit(0)
 }).catch((err) => {
-  console.error(err)
+  core.setFailed(err.message)
   process.exit(1)
 })
 
