@@ -7,6 +7,7 @@ async function run() {
   })
 
   const contextPullRequest = github.context.payload.pull_request;
+  console.log(github.context.payload.number)
   if (!contextPullRequest) {
     const message = 'This action can only be used in `pull_request` or `pull_request_target`.'
     if (process.env.INPUT_CONTINUEIFNONPR != 'false') {
@@ -29,16 +30,16 @@ async function run() {
   const isWip = /^\[WIP\]\s/.test(pullRequest.title)
   const logs = isWip ? 'This PR is marked as "WIP".' : 'This PR is marked as "Ready to review".'
   core.debug(`status: ${isWip}`)
-  core.setOutput("isWip", isWip ? "true" : "false")
+  core.setOutput("is-wip", isWip ? "true" : "false")
 
   await client.request('POST /repos/:owner/:repo/statuses/:sha', {
     owner,
     repo,
     sha: pullRequest.head.sha,
     state: isWip ? 'pending' : 'success',
-    target_url: 'https://github.com/shiipou/pr-is-wip-action',
+    target_url: pullRequest.url,
     description: logs,
-    context: 'pr-is-wip-action'
+    context: 'pr-is-wip'
   })
 
   return logs

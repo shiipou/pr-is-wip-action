@@ -98,7 +98,6 @@ function escapeProperty(s) {
 }
 //# sourceMappingURL=command.js.map
 
-
 /***/ }),
 
 /***/ 2186:
@@ -417,7 +416,6 @@ function getIDToken(aud) {
 }
 exports.getIDToken = getIDToken;
 //# sourceMappingURL=core.js.map
-
 
 /***/ }),
 
@@ -8479,6 +8477,7 @@ async function run() {
   })
 
   const contextPullRequest = github.context.payload.pull_request;
+  console.log(github.context.payload.number)
   if (!contextPullRequest) {
     const message = 'This action can only be used in `pull_request` or `pull_request_target`.'
     if (process.env.INPUT_CONTINUEIFNONPR != 'false') {
@@ -8508,9 +8507,9 @@ async function run() {
     repo,
     sha: pullRequest.head.sha,
     state: isWip ? 'pending' : 'success',
-    target_url: 'https://github.com/shiipou/pr-is-wip-action',
+    target_url: pullRequest.url,
     description: logs,
-    context: 'pr-is-wip-action'
+    context: 'pr-is-wip'
   })
 
   return logs

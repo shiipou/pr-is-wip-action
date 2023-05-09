@@ -1,0 +1,33 @@
+name: Test
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+
+  pr-is-wip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: pr-is-wip
+        name: pr-is-wip
+        uses: shiipou/pr-is-wip-action@4-v2-updating-status-of-a-pr-from-another-ci-run
+        with:
+          continueIfNonPR: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      is-wip: ${{ steps.pr-is-wip.outputs.isWip }}
+
+  pushed:
+    if: github.event_name == 'push' && needs.pr-is-wip.outputs.is-wip == 'false'
+    runs-on: ubuntu-latest
+    needs: [ pr-is-wip ]
+    steps:
+      - name: Build
+        run: echo "Running build"
