@@ -16,5 +16,7 @@ inputs:
     required: false
     default: 'false'
 outputs:
-  isWip:
+  is-wip:
     description: "Is the PR in WIP state"
+  continue:
+    description: "Should the workflow continue or stop here ? ('true' or 'false')"
