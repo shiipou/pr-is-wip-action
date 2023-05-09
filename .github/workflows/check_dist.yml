@@ -26,6 +26,8 @@ jobs:
       - id: pr-is-wip
         name: pr-is-wip
         uses: shiipou/pr-is-wip-action@latest
+        with:
+          continueIfNonPR: 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:

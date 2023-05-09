@@ -1,12 +1,6 @@
 name: PR Title Check
 
 on:
-  push:
-    branches:
-      - stable
-      - beta
-      - latest
-      - "*.x"
   pull_request:
     types:
       - opened
