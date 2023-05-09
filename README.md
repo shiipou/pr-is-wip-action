@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - pr-is-wip
-    if: needs.prIsWip.outputs.continue == 'true'
+    if: needs.pr-is-wip.outputs.is-wip == 'false'
     steps:
       - uses: actions/checkout@v2
       [...]
