@@ -18,30 +18,33 @@ Your workflow declaration must fit the following :
 
 ```yaml
 name: Check CI
+
 on:
+  push:
   pull_request:
     types:
       - opened
-      - edited
       - synchronize
+      - edited
+      - reopened
 
 jobs:
-  prIsWip:
+  pr-is-wip:
     name: PR is WIP?
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
       - id: pr-is-wip
-        uses: shiipou/pr-is-wip-action@v1.1.x
+        uses: shiipou/pr-is-wip-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  checks:
-    name: Checks
+  build:
+    name: Build
     runs-on: ubuntu-latest
     needs:
-      - prIsWip
-    if: needs.prIsWip.outputs.isWip == 'false'
+      - pr-is-wip
+    if: needs.pr-is-wip.outputs.is-wip == 'false'
     steps:
       - uses: actions/checkout@v2
       [...]

@@ -16,5 +16,5 @@ inputs:
     required: false
     default: 'false'
 outputs:
-  isWip:
+  is-wip:
     description: "Is the PR in WIP state"

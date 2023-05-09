@@ -2,14 +2,14 @@ name: Release
 on:
   push:
     branches:
-      - latest
+      - stable
       - beta
       - "*.x"
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 2
     steps:
       - name: Checkout
         uses: actions/checkout@v2
