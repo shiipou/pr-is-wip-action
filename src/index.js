@@ -7,7 +7,7 @@ async function run() {
   })
 
   console.log('check_run')
-  console.log(github.context.check_run)
+  console.log(github.context)
   core.setOutput("continue", github.context.event_name == 'push' || (github.context.event_name == 'check_run' && github.context.check_run.name == 'pr-is-wip' && github.context.check_run.conclusion == 'success'))
 
   const contextPullRequest = github.context.payload.pull_request;
