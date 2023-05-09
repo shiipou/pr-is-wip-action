@@ -20,7 +20,7 @@ jobs:
     steps:
       - id: pr-is-wip
         name: pr-is-wip
-        uses: shiipou/pr-is-wip-action@4-v2-updating-status-of-a-pr-from-another-ci-run
+        uses: shiipou/pr-is-wip-action@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
