@@ -9633,10 +9633,6 @@ async function run() {
     baseUrl: process.env.INPUT_GITHUBBASEURL,
   })
 
-  console.log('check_run')
-  console.log(github.context)
-  core.setOutput("continue", github.context.event_name == 'push' || (github.context.event_name == 'check_run' && github.context.check_run.name == 'pr-is-wip' && github.context.check_run.conclusion == 'success'))
-
   const contextPullRequest = github.context.payload.pull_request;
   console.log(github.context.payload.number)
 
@@ -9662,7 +9658,7 @@ async function run() {
   const isWip = /^(\(|\[)?WIP(\)|\])?\s/.test(pullRequest.title)
   const logs = isWip ? 'This PR is marked as "WIP".' : 'This PR is marked as "Ready to review".'
   core.debug(`status: ${isWip}`)
-  core.setOutput("is-wip", isWip ? "true" : "false")
+  core.setOutput("is-wip", `${isWip}`)
 
   await client.request('POST /repos/:owner/:repo/statuses/:sha', {
     owner,
