@@ -17,9 +17,11 @@ jobs:
         uses: shiipou/pr-is-wip-action@4-v2-updating-status-of-a-pr-from-another-ci-run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      is-wip: ${{ steps.pr-is-wip.outputs.is-wip }}
  
   build:
-    if: needs.pr-is-wip.outputs.continue == 'true'
+    if: needs.pr-is-wip.outputs.is-wip == 'false'
     runs-on: ubuntu-latest
     needs: [ pr-is-wip ]
     steps:
